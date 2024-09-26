@@ -17,7 +17,7 @@ export async function usersRoutes(app: FastifyInstance) {
     )
 
     if (!success) {
-      return reply.status(401).send({
+      return reply.status(400).send({
         success: false,
         message: {},
         error: error.flatten().fieldErrors,
@@ -26,7 +26,7 @@ export async function usersRoutes(app: FastifyInstance) {
 
     const { name, email } = data
 
-    const userByEmail = await knex('users').select().where({ email })
+    const userByEmail = await knex('users').select().where({ email }).first()
 
     if (userByEmail) {
       return reply.status(400).send({
